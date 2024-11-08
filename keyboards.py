@@ -8,14 +8,19 @@ main = ReplyKeyboardMarkup(keyboard=[
 ], resize_keyboard=True)
 
 inline_kb = InlineKeyboardMarkup(inline_keyboard=[
-    [InlineKeyboardButton(text='Привет!', callback_data='hello')],
-    [InlineKeyboardButton(text='Пока!', callback_data='goodbye')]
+    [InlineKeyboardButton(text='Новости', url='https://dzen.ru/news/')],
+    [InlineKeyboardButton(text='Музыка', url='https://zaycev.net/')],
+    [InlineKeyboardButton(text='Видео', url='https://vk.com/video')]
+])
+
+inline_kb2 = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text='Показать больше', callback_data= 'dynamic')],
 ])
 
 test = ["Опция 1", "Опция 2"]
 async def dinamic_kb():
-    keyboard = ReplyKeyboardBuilder()
+    keyboard = InlineKeyboardBuilder()
     for key in test:
-        keyboard.add(KeyboardButton(text=key))
+        keyboard.add(InlineKeyboardButton(text=key), callback_data=key)
     keyboard.adjust(2)
     return keyboard.as_markup()
