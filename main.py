@@ -1,19 +1,11 @@
 import asyncio
-import requests
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart, Command
-from aiogram.types import Message, FSInputFile, ReplyKeyboardRemove
+from aiogram.types import Message
 from aiogram import types
 from config import TOKEN, POGODA, URL, URL_FORECAST
-import random
-from datetime import datetime, timedelta
-from gtts import gTTS
-import os
-import sqlite3
 from aiogram.fsm.context import FSMContext
-from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.storage.memory import MemoryStorage
-import aiohttp
 import logging
 import keyboards as kb
 
@@ -21,9 +13,6 @@ storage = MemoryStorage()
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 logging.basicConfig(level=logging.INFO)
-API_KEY = POGODA
-WEATHER_URL = URL
-WEATHER_URL_FORECAST = URL_FORECAST
 
 
 @dp.message(F.text == 'Опция 1')
@@ -37,8 +26,17 @@ async def op2(message: Message):
 @dp.callback_query(F.data == 'dynamic')
 async def callback_dynamic(callback: types.CallbackQuery, state: FSMContext):
     await callback.answer("Кнопка нажата")
-    await callback.message.edit_text("{callback.from_user.full_name}, выберите опцию:", reply_markup=await kb.dinamic_kb())
-    # await callback.message.answer(f"Привет, {callback.from_user.full_name}!", reply_markup= await kb.dinamic_kb())
+    await callback.message.edit_text(f"{callback.from_user.full_name}, выберите опцию:", reply_markup=await kb.dinamic_kb())
+
+
+@dp.callback_query(F.data == 'opt1')
+async def callback_dynamic(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.answer("Опция 1")
+
+
+@dp.callback_query(F.data == 'opt2')
+async def callback_dynamic(callback: types.CallbackQuery, state: FSMContext):
+    await callback.message.answer("Опция 2")
 
 @dp.message(CommandStart())
 async def cmd_start(message: Message, state: FSMContext):

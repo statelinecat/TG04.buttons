@@ -1,6 +1,6 @@
-# from aiogram.handlers import message
-from aiogram.types import Message, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+
+from aiogram.types import  ReplyKeyboardMarkup, KeyboardButton,  InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.utils.keyboard import  InlineKeyboardBuilder
 
 
 main = ReplyKeyboardMarkup(keyboard=[
@@ -17,10 +17,11 @@ inline_kb2 = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text='Показать больше', callback_data= 'dynamic')],
 ])
 
-test = ["Опция 1", "Опция 2"]
+test = [{"Опция 1": "opt1"}, {"Опция 2": "opt2"}]
 async def dinamic_kb():
     keyboard = InlineKeyboardBuilder()
     for key in test:
-        keyboard.add(InlineKeyboardButton(text=key), callback_data=key)
-    keyboard.adjust(2)
+        for k_text, k_data in key.items():
+            keyboard.add(InlineKeyboardButton(text=k_text, callback_data=k_data))
+            keyboard.adjust(2)
     return keyboard.as_markup()
